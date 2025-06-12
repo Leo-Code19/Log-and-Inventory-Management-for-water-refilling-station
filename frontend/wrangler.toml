@@ -1,0 +1,18 @@
+name = "cleaar-oasis"
+type = "webpack"
+account_id = ""  # Fill in your Cloudflare account ID
+workers_dev = true
+route = ""
+zone_id = ""  # Fill in your Cloudflare zone ID if you have a custom domain
+
+[site]
+bucket = "./dist"
+entry-point = "workers-site"
+
+[env.production]
+# Production-specific variables
+API_URL = "https://your-backend-api.com"  # Replace with your production API URL
+
+[env.staging]
+# Staging-specific variables
+API_URL = "https://staging-api.your-domain.com"  # Replace with your staging API URL

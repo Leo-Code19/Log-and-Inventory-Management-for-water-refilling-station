@@ -1,0 +1,132 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style type="text/css">
+  .login {
+    background: var(--light);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .login #container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 450px;
+    width: 90%;
+  }
+  
+  .login #header {
+    background: var(--primary);
+    padding: 30px;
+    text-align: center;
+  }
+  
+  .login #content {
+    padding: 30px;
+  }
+  
+  .login .form-row {
+    padding: 10px 0;
+  }
+  
+  .login .form-row label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+  
+  .login .submit-row {
+    padding: 20px 0 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+    text-align: right;
+  }
+  
+  .login .submit-row input {
+    width: 100%;
+    padding: 12px;
+  }
+  
+  .login .form-row input {
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .login .login-link {
+    text-align: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+  }
+</style>
+{% endblock %}
+
+{% block bodyclass %}login{% endblock %}
+
+{% block usertools %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  {% if form.errors %}
+  <p class="errornote">
+    {% if form.errors.items|length == 1 %}{% translate "Please correct the error below." %}{% else %}{% translate "Please correct the errors below." %}{% endif %}
+  </p>
+  {% endif %}
+
+  {% if messages %}
+  <ul class="messagelist">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div id="content-main">
+    <form action="/admin/register/" method="post" id="register-form">{% csrf_token %}
+      <div class="form-row">
+        {{ form.username.errors }}
+        <label for="id_username">{{ form.username.label }}:</label>
+        {{ form.username }}
+      </div>
+      <div class="form-row">
+        {{ form.email.errors }}
+        <label for="id_email">{{ form.email.label }}:</label>
+        {{ form.email }}
+      </div>
+      <div class="form-row">
+        {{ form.password1.errors }}
+        <label for="id_password1">{{ form.password1.label }}:</label>
+        {{ form.password1 }}
+      </div>
+      <div class="form-row">
+        {{ form.password2.errors }}
+        <label for="id_password2">{{ form.password2.label }}:</label>
+        {{ form.password2 }}
+      </div>
+      <div class="submit-row">
+        <input type="submit" value="{% translate 'Sign Up' %}">
+      </div>
+    </form>
+
+    <div class="login-link">
+      <p>Already have an account? <a href="{% url 'admin:login' %}">Log in</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+[Unit]
+Description=Cleaar Oasis Gunicorn Daemon
+After=network.target postgresql.service redis.service
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/cleaar-oasis/backend
+Environment="PATH=/var/www/cleaar-oasis/backend/venv/bin"
+Environment="DJANGO_SETTINGS_MODULE=backend.settings_prod"
+ExecStart=/var/www/cleaar-oasis/backend/venv/bin/gunicorn \
+    --workers 3 \
+    --bind unix:/tmp/cleaar-oasis.sock \
+    --access-logfile /var/log/cleaar-oasis/access.log \
+    --error-logfile /var/log/cleaar-oasis/error.log \
+    --capture-output \
+    --enable-stdio-inheritance \
+    backend.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

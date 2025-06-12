@@ -1,0 +1,355 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'admin/css/custom_admin.css' %}">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style type="text/css">
+  .background-shapes {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+  }
+
+  .shape {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 50%;
+    animation: float 15s infinite;
+  }
+
+  .shape:nth-child(1) {
+    width: 200px;
+    height: 200px;
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+
+  .shape:nth-child(2) {
+    width: 150px;
+    height: 150px;
+    top: 60%;
+    right: 15%;
+    animation-delay: -5s;
+  }
+
+  .shape:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    bottom: 20%;
+    left: 20%;
+    animation-delay: -10s;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    33% {
+      transform: translate(30px, -50px) rotate(120deg);
+    }
+    66% {
+      transform: translate(-20px, 20px) rotate(240deg);
+    }
+    100% {
+      transform: translate(0, 0) rotate(360deg);
+    }
+  }
+
+  body.login {
+    background: linear-gradient(135deg, #4361ee, #7209b7);
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .login #container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 450px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .login #header {
+    background: #4361ee;
+    background: linear-gradient(to right, #4361ee, #3a56d4);
+    position: relative;
+    overflow: hidden;
+    color: white;
+    padding: 40px 30px;
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .login #header .logo {
+    width: 80px;
+    height: auto;
+    margin-bottom: 5px;
+  }
+  
+  .login #header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    animation: rotate 15s linear infinite;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .login #header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.5px;
+  }
+  
+  .login #header:after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login #content {
+    padding: 40px 30px;
+  }
+  
+  .login .form-row {
+    padding: 12px 0;
+    position: relative;
+  }
+  
+  .login .form-row label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #2a2a2a;
+    transition: all 0.3s;
+  }
+  
+  .login .form-row input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all 0.3s;
+    background-color: #ffffff;
+    color: #2a2a2a;
+  }
+  
+  .login .form-row {
+    position: relative;
+  }
+
+  .login .form-row::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: all 0.3s;
+    transform: translateX(-50%);
+  }
+
+  .login .form-row:focus-within::after {
+    width: 100%;
+  }
+
+  .login .form-row input:focus {
+    border-color: #4361ee;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    outline: none;
+  }
+  
+  .login .submit-row {
+    padding: 25px 0 0;
+  }
+  
+  .login .submit-row input {
+    width: 100%;
+    padding: 14px;
+    background: #4361ee;
+    background: linear-gradient(to right, #4361ee, #3a56d4);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s;
+    letter-spacing: 0.5px;
+  }
+  
+  .login .submit-row input:hover {
+    background: linear-gradient(to right, #3a56d4, #2a46c4);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+  }
+  
+  .back-button {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    color: var(--primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px 16px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    z-index: 1000;
+  }
+
+  .back-button svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--primary);
+    transition: transform 0.3s;
+  }
+
+  .back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .back-button:hover svg {
+    transform: translateX(-3px);
+  }
+
+  .back-button:hover {
+    opacity: 1;
+  }
+
+  .back-button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+
+  
+  .errornote {
+    background-color: #ffebee;
+    border-left: 4px solid #f44336;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    color: #d32f2f;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  @media (max-width: 576px) {
+    .login #container {
+      width: 95%;
+    }
+    
+    .login #header {
+      padding: 30px 20px;
+    }
+    
+    .login #content {
+      padding: 30px 20px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block bodyclass %}login{% endblock %}
+
+{% block usertools %}{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block header %}
+<div id="header">
+    <img src="{% static 'logo.png' %}" alt="Cleaar Oasis Logo" class="logo">
+    <h1 id="site-name">{{ site_title|default:_('Django administration') }}</h1>
+</div>
+{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div class="background-shapes">
+  <div class="shape"></div>
+  <div class="shape"></div>
+  <div class="shape"></div>
+</div>
+<div id="content-main">
+  <a href="/" class="back-button">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Back to Home
+  </a>
+  {% if form.errors %}
+  <div class="errornote">
+    {% if form.errors.items|length == 1 %}{% translate "Please correct the error below." %}{% else %}{% translate "Please correct the errors below." %}{% endif %}
+  </div>
+  {% endif %}
+
+  <div id="content-main">
+    <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+      <div class="form-row">
+        {{ form.username.errors }}
+        <label for="id_username">{{ form.username.label }}</label>
+        {{ form.username }}
+      </div>
+      <div class="form-row">
+        {{ form.password.errors }}
+        <label for="id_password">{{ form.password.label }}</label>
+        {{ form.password }}
+        <input type="hidden" name="next" value="{{ next }}">
+      </div>
+      <div class="submit-row">
+        <input type="submit" value="{% translate 'Log in' %}">
+      </div>
+    </form>
+    
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Cleaar Oasis Admin') }}{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/custom_admin.css' %}">
+  <style>
+    /* Force input text color and background in admin */
+    input, textarea, select, .vTextField {
+      color: #000 !important;
+      background-color: #fff !important;
+    }
+    input:focus, textarea:focus, select:focus, .vTextField:focus {
+      color: #000 !important;
+      background-color: #fff !important;
+    }
+  </style>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        Cleaar Oasis Administration
+    </a>
+</h1>
+{% endblock %}
+
+{% block welcome-msg %}
+    <strong>{% firstof user.get_short_name user.get_username %}</strong> | 
+    {% if user.has_usable_password %}
+        <a href="{% url 'admin:password_change' %}">Change password</a> | 
+    {% endif %}
+    <form id="logout-form" method="post" action="{% url 'admin:logout' %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" style="background: none; border: none; color: white; cursor: pointer; font-size: inherit; padding: 0; text-decoration: underline;">Log out</button>
+    </form>
+{% endblock %}
+
+{% block userlinks %}
+    {% if site_url %}
+        <a href="{{ site_url }}">View Site</a> /
+    {% endif %}
+    {% if user.is_active and user.is_staff %}
+        {% url 'django-admindocs-docroot' as docsroot %}
+        {% if docsroot %}
+            <a href="{{ docsroot }}">Documentation</a> /
+        {% endif %}
+    {% endif %}
+    {% if user.has_usable_password %}
+        <a href="{% url 'admin:password_change' %}">Change password</a> /
+    {% endif %}
+    <form id="userlinks-logout-form" method="post" action="{% url 'admin:logout' %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" style="background: none; border: none; color: var(--link-fg); cursor: pointer; font-size: inherit; padding: 0; text-decoration: underline;">Log out</button>
+    </form>
+{% endblock %}
